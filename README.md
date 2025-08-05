@@ -3,7 +3,7 @@
 
 **🖼️ Hileden görsel:**
 
-<img width="502" height="651" alt="image" src="https://github.com/user-attachments/assets/17e8a3f2-7a57-4a95-9f96-41b8493bb262" />
+<img width="501" height="646" alt="image" src="https://github.com/user-attachments/assets/1ed1f519-b53c-4def-9807-2bca085e6ca7" />
 
 🎮 *Kuvvethax*, Counter-Strike 2 (CS2) oyunu için geliştirilmiş kullanıcı dostu bir **Glow ESP** aracıdır.  
 Bu yazılım sayesinde düşmanları ve takım arkadaşlarını ekran üzerinden duvar arkasından gösterecek şekilde parlak renklerle vurgulayabilir,  
