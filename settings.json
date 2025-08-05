@@ -1,0 +1,16 @@
+{
+    "glow_enabled": true,
+    "team_check_enabled": true,
+    "enemy_color": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+    ],
+    "team_color": [
+        0.0,
+        0.3,
+        1.0,
+        1.0
+    ]
+}
