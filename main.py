@@ -107,10 +107,14 @@ class CS2GlowManager:
     def _read_u(self, addr): return struct.unpack("I", self._read(addr, 4))[0] if self._read(addr, 4) else 0
     def _read_ull(self, addr): return struct.unpack("Q", self._read(addr, 8))[0] if self._read(addr, 8) else 0
     def _write_u(self, addr, val): return self._write(addr, struct.pack("I", val))
+    
+    # --- DEĞİŞİKLİK BURADA ---
     def _to_argb(self, r, g, b, a):
         clamp = lambda x: max(0, min(1, x))
         r, g, b, a = [int(clamp(c) * 255) for c in (r, g, b, a)]
-        return (a << 24) | (r << 16) | (g << 8) | b
+        # R ve B kanallarının yerini değiştiriyoruz. (r << 16) yerine (b << 16), b yerine r yazıldı.
+        return (a << 24) | (b << 16) | (g << 8) | r
+    # --- DEĞİŞİKLİK SONU ---
 
     def _get_local_team(self):
         local = self._read_ull(self.client + Offsets.wLocalPlayerPawn)
@@ -156,7 +160,7 @@ class App(ctk.CTk):
     DEFAULT_SETTINGS_FILE = "default.json"
     TEAM_PNG = "assets/ct.png"
     ENEMY_PNG = "assets/t.png"
-    ICON_FILE = "icon.ico"
+    ICON_FILE = "assets/icon.ico"
     PALETTE_ICON = "assets/palette.png"
     
     TARGET_IMAGE_WIDTH = 140
@@ -267,7 +271,7 @@ class App(ctk.CTk):
         self.enemy_box.grid_rowconfigure(1, weight=1)
         self.enemy_box.grid_columnconfigure(0, weight=1)
         
-        enemy_label = ctk.CTkLabel(self.enemy_box, text="TERÖRİST", font=ctk.CTkFont(size=16, weight="bold"))
+        enemy_label = ctk.CTkLabel(self.enemy_box, text="ÖRNEK DÜŞMAN", font=ctk.CTkFont(size=16, weight="bold"))
         enemy_label.grid(row=0, column=0, pady=(10, 5))
         self.enemy_image_label = ctk.CTkLabel(self.enemy_box, text="")
         self.enemy_image_label.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
@@ -277,7 +281,7 @@ class App(ctk.CTk):
         self.team_box.grid_rowconfigure(1, weight=1)
         self.team_box.grid_columnconfigure(0, weight=1)
 
-        team_label = ctk.CTkLabel(self.team_box, text="ANTİ-TERÖRİST", font=ctk.CTkFont(size=16, weight="bold"))
+        team_label = ctk.CTkLabel(self.team_box, text="ÖRNEK TAKIM", font=ctk.CTkFont(size=16, weight="bold"))
         team_label.grid(row=0, column=0, pady=(10, 5))
         self.team_image_label = ctk.CTkLabel(self.team_box, text="")
         self.team_image_label.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
@@ -292,22 +296,22 @@ class App(ctk.CTk):
         self.glow_switch.grid(row=0, column=0, padx=20, pady=(15, 10), sticky="w")
         
         self.team_check_switch = ctk.CTkSwitch(
-            control_frame, text="Anti-Terörist Glow", variable=self.team_check_var, command=self.update_ui_state,
+            control_frame, text="Takım Glow", variable=self.team_check_var, command=self.update_ui_state,
             progress_color="#007BFF", font=ctk.CTkFont(size=14))
         self.team_check_switch.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
         self.enemy_color_button = ctk.CTkButton(
-            control_frame, text="Terörist Rengi", command=lambda: self.pick_color("enemy"),
+            control_frame, text="Düşman Rengi", command=lambda: self.pick_color("enemy"),
             image=self.palette_icon_image, compound="left")
         self.enemy_color_button.grid(row=2, column=0, padx=20, pady=10, sticky="ew")
 
         self.team_color_button = ctk.CTkButton(
-            control_frame, text="Anti-Terörist Rengi", command=lambda: self.pick_color("team"),
+            control_frame, text="Takım Rengi", command=lambda: self.pick_color("team"),
             image=self.palette_icon_image, compound="left")
         self.team_color_button.grid(row=3, column=0, padx=20, pady=(10, 15), sticky="ew")
 
     def pick_color(self, target):
-        title = "Terörist Rengi Seç" if target == "enemy" else "Anti-Terörist Rengi Seç"
+        title = "Düşman Rengi Seç" if target == "enemy" else "Takım Rengi Seç"
         
         color_code = colorchooser.askcolor(
             color=self.rgba_to_hex(self.settings[f"{target}_color"]),
