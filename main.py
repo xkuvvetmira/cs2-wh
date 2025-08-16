@@ -21,8 +21,8 @@ TH32CS_SNAPPROCESS = 0x00000002
 TH32CS_SNAPMODULE = 0x00000008
 
 class Offsets:
-    wLocalPlayerPawn = 28265344
-    dwEntityList = 30139936
+    wLocalPlayerPawn = 29299872
+    dwEntityList = 30496120
     m_iTeamNum = 1003
     m_hPlayerPawn = 2300
     m_lifeState = 848
@@ -404,3 +404,4 @@ if __name__ == "__main__":
         
     except Exception as e:
         input(f"Başlatma Hatası: {e}\nCS2 oyununun çalıştığından emin olun.\nÇıkmak için Enter'a basın...")
+
